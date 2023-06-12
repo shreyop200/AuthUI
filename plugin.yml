@@ -1,5 +1,5 @@
 name: AuthUI
-main: shreyop200/AuthUI\Auth
+main: shreyop200/AuthUI/Auth
 src-namespace-prefix: shreyop200/AuthUI
 api:
 - 4.0.0
