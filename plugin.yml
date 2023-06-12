@@ -1,0 +1,7 @@
+name: AuthUI
+main: shreyop200/AuthUI
+api:
+- 4.0.0
+- 5.0.0
+version: 0.1.0
+author: shreyop200, Dimey
