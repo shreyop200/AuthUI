@@ -6,7 +6,9 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\player\Player;
 use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat;
+use jojoe77777\FormAPI;
 use jojoe77777\FormAPI\CustomForm;
+use jojoe77777\FormAPI\SimpleForm;
 
 class Main extends PluginBase {
 
