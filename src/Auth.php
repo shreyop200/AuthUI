@@ -17,7 +17,7 @@ class Main extends PluginBase {
     public function onEnable(): void {
         $this->players = [];
         $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
-        $this->getCommand("loginreload")->setExecutor(new ReloadCommand($this));
+        $this->getServer()->getCommandMap()->register("loginreload", new ReloadCommand($this));
     }
 
     public function onPlayerJoin(Player $player): void {
