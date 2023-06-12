@@ -8,18 +8,17 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandExecutor;
 use pocketmine\command\CommandSender;
 
-class ReloadCommand extends Command implements CommandExecutor {
+class ReloadCommand extends Command {
 
     private $plugin;
 
     public function __construct(Main $plugin) {
-        parent::__construct("loginreload", "Reload player data", "/loginreload");
-        $this->setPermission("login.reload");
+        parent::__construct("loginreload", "Reload player data", "/loginreload", ["lr"]);
         $this->plugin = $plugin;
     }
 
-    public function execute(CommandSender $sender, string $commandLabel, array $args): bool {
-        if ($sender->hasPermission($this->getPermission())) {
+    public function execute(CommandSender $sender, string $commandLabel, array $args) {
+        if ($sender->hasPermission("authui.command.reload")) {
             $this->plugin->reloadPlayerData();
             $sender->sendMessage("Player data reloaded.");
         } else {
