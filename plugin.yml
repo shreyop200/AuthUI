@@ -14,3 +14,7 @@ permissions:
  authui.use:
   default: true
   description: "Allows the player to use authui"
+
+ authui.command.reload:
+  default: op
+  description: "Allows the player to use reload command"
