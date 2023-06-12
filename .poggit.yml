@@ -1,0 +1,6 @@
+--- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/shreyop200/AuthUI
+build-by-default: true
+branches:
+- main
+projects: []
+...
