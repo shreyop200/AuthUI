@@ -1,6 +1,6 @@
 <?php
 
-namespace shreyop200/AuthUI/Auth;
+namespace shreyop200\AuthUI\Auth;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\player\Player;
