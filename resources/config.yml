@@ -1,1 +1,54 @@
 
+# AuthUI Configuration File
+# Modify the settings below to customize your AuthUI plugin
+
+# Enable LoginRewards or not
+# Will the player get any reward when they complete specific logins in server
+login-rewards: true 
+
+
+# the rewards given to player when they complete specific logins in server
+login-reward: 
+  1: "give {player} diamond 1" 
+  20: "give {player} diamond 10"
+# add more numbers to addmore login rewards in it, for example
+# 100: "ban {player}" ( It will ban player when they reach 100 logins)
+
+# Title for the registration form
+register_title: "__AuthUI__ §l§6Register"
+
+# Title for the login form
+login_title: "__AuthUI__ §l§6Login"
+
+# Message displayed when the password matches during registration
+password_match_message: "You have successfully registered!"
+
+# Message displayed when the passwords do not match during registration
+password_mismatch_kick_message: "Passwords do not match. Please try again."
+
+# Message displayed when an invalid captcha is entered during registration or login
+invalid_captcha_kick_message: "Invalid captcha. Please try again."
+
+# Message displayed when an invalid password is entered during login
+invalid_password_kick_message: "INVALID PASSWORD\n\n§eIf you forget your Password, please contact the Admin/Owner."
+
+# Message displayed when a player's password is reset
+password_reset_message: "Your password has been reset. Please register again."
+
+# Message displayed when the player data is reloaded
+reload_message: "Reloading player data..."
+
+# Message displayed when the player forgets their password and requests a reset
+forgot_password_message: "Please contact our support server to reset your password."
+
+# Registration success message
+register_success_message: "You have successfully registered your account."
+
+# Login success message
+login_success_message: "Welcome back! You have successfully logged in."
+
+# Reward message for login milestones
+reward_message: "Congratulations! You have reached a login milestone of {milestone}. You received a reward."
+
+# Password reset message
+password_reset_message: "Your password has been reset. Please register a new password."
