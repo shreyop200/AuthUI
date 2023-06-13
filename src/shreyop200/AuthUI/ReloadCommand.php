@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace shreyop200\AuthUI\Auth;
+namespace shreyop200\AuthUI;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandExecutor;
