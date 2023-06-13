@@ -1,6 +1,6 @@
 <?php
 
-namespace shreyop200\AuthUI\Auth;
+namespace shreyop200\AuthUI;
 
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
