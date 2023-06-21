@@ -7,10 +7,17 @@ website: https://wenpixel.games
 description: A Plugin To Manage your Security With AuthUI
 author: shreyop200
 
+commands: 
+  loginreload: 
+    description: Reload player data 
+    usage: /loginreload
+    permission: authui.command.reload
+
 permissions:
- authui.use:
-  default: true
-  description: "Allows the player to use authui"
- authui.command.reload:
-  default: op
-  description: "Allows the player to use reload command"
+  authui.use:
+    default: true
+    description: "Allows the player to use authui"
+ 
+  authui.command.reload:
+    default: op
+    description: "Allows the player to use reload command"
