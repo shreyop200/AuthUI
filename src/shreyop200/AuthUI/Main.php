@@ -28,7 +28,8 @@ class Main extends PluginBase implements Listener {
         $this->createDataFolder();
 
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
-        $this->getServer()->getCommandMap()->register("loginreload", new ReloadCommand($this));
+        $this->getServer()->getCommandMap()->register($this->getName(), new ReloadCommand($this, $this->getName()));
+
     }
 
     private function createDataFolder(): void {
