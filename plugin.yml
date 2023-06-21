@@ -1,7 +1,7 @@
 name: AuthUI
 main: shreyop200\AuthUI\Main
 
-api: 4.20
+api: [4.20.0, 5.0.0]
 version: 0.1.0
 website: https://wenpixel.games
 description: A Plugin To Manage your Security With AuthUI
@@ -9,8 +9,7 @@ author: shreyop200
 
 commands: 
   loginreload: 
-    description: Reload player data 
-    usage: /loginreload
+    description: Reload player data
     permission: authui.command.reload
 
 permissions:
