@@ -1,7 +1,8 @@
 # AuthUI
 
 
-**AuthUI** is a feature-rich plugin designed for **PocketMine-MP** servers with API 4.20 and above support, specifically created to enhance authentication and login processes. It provides an intuitive and user-friendly interface for players to securely log in and manage their authentication-related actions. With AuthUI, server administrators can enforce account security measures and provide a seamless login experience for their players! Experience the ultimate security and authentication management for your server with **AuthUI**!
+**AuthUI** is a feature-rich plugin designed for **PocketMine-MP** servers with API 4.0 and above support, including the latest API 5.0. It is specifically created to enhance authentication and login processes, providing an intuitive and user-friendly interface for players. AuthUI allows server administrators to enforce account security measures and offer a seamless login experience to their players. 
+- To ensure the best compatibility and experience, AuthUI supports both PocketMine API 4.0 and the latest API 5.0. This allows server owners to utilize the plugin's functionality regardless of the PocketMine-MP version they are using. 
 
 ## Key Features
 
