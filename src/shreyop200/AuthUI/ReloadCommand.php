@@ -13,18 +13,18 @@ class ReloadCommand extends Command implements PluginOwned {
     private $plugin;
 
     public function __construct(Main $plugin, string $name) {
-        parent::__construct($name, "Reload player data", "/$name", [$name]);
+        parent::__construct($name, "Reload player data", "/$name", ["lr"]);
         $this->plugin = $plugin;
+        
+        $this->setPermission("authui.command.reload");
+        
     }
 
     public function execute(CommandSender $sender, string $commandLabel, array $args): bool {
-        if ($sender->hasPermission("authui.command.reload")) {
+       
             $this->plugin->reloadPlayerData();
             $sender->sendMessage("Player data reloaded.");
-        } else {
-            $sender->sendMessage("You don't have permission to use this command.");
-        }
-        return true;
+            return true;
     }
 
     public function getOwningPlugin(): Main {
