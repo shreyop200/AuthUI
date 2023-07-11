@@ -6,8 +6,5 @@ projects:
   AuthUI:
     path: ""
     icon: "resources/authentication.png"
-    libs:
-      - src: jojoe77777/FormAPI/libFormAPI
-        version: ^2.1.1
 ...
 
