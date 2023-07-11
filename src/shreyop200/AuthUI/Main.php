@@ -13,11 +13,17 @@ use jojoe77777\FormAPI;
 use jojoe77777\FormAPI\CustomForm;
 use jojoe77777\FormAPI\SimpleForm;
 use pocketmine\console\ConsoleCommandSender;
+use pocketmine\AsyncTask;
+use pocketmine\scheduler\ClosureTask;
+use pocketmine\scheduler\TaskScheduler;
+use SQLite3;
+use SQLite3Result;
 
 class Main extends PluginBase implements Listener {
 
     private $players;
     private $config;
+    private $database;
 
     public function onEnable(): void {
         $this->players = [];
@@ -27,21 +33,74 @@ class Main extends PluginBase implements Listener {
 
         $this->createDataFolder();
 
+        $this->database = new SQLite3($this->getDataFolder() . "player_data.db");
+        $this->initializeDatabase();
+
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
         $this->getServer()->getCommandMap()->register($this->getName(), new ReloadCommand($this, $this->getName()));
+        $this->getServer()->getCommandMap()->register($this->getName(), new UnregisterCommand($this, $this->getName()));
 
+        $this->getScheduler()->scheduleDelayedTask(new ClosureTask(function (/*int $currentTick*/): void {
+            $this->loadPlayerData();
+        }), 1);
     }
 
     private function createDataFolder(): void {
-        $dataFolderPath = $this->getDataFolder() . 'data';
+        $dataFolderPath = $this->getDataFolder();
         if (!is_dir($dataFolderPath)) {
             mkdir($dataFolderPath);
         }
     }
 
+    private function initializeDatabase(): void {
+        $createTableQuery = "CREATE TABLE IF NOT EXISTS players (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            playerName TEXT NOT NULL,
+            password TEXT NOT NULL,
+            loginStreak INTEGER DEFAULT 0
+        )";
+
+        $this->database->exec($createTableQuery);
+    }
+
+    private function loadPlayerData(): void {
+        $result = $this->database->query("SELECT * FROM players");
+        while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+            $playerName = $row['playerName'];
+            $this->players[$playerName] = $row;
+        }
+        $result->finalize();
+    }
+
+    private function hasRegistered(Player $player): bool {
+        $playerName = $player->getName();
+        return isset($this->players[$playerName]);
+    }
+
+    private function getPlayerData(Player $player): ?array {
+        $playerName = $player->getName();
+        return $this->players[$playerName] ?? null;
+    }
+
+    private function savePlayerData(Player $player, array $data): void {
+        $playerName = $player->getName();
+        $this->players[$playerName] = $data;
+
+        $password = $this->database->escapeString($data['password']);
+        $loginStreak = $data['loginStreak'];
+
+        $existingData = $this->getPlayerData($player);
+        if ($existingData === null) {
+            $query = "INSERT INTO players (playerName, password, loginStreak) VALUES ('$playerName', '$password', $loginStreak)";
+        } else {
+            $query = "UPDATE players SET password = '$password', loginStreak = $loginStreak WHERE playerName = '$playerName'";
+        }
+
+        $this->database->exec($query);
+    }
+
     public function onPlayerJoin(PlayerJoinEvent $event): void {
         $player = $event->getPlayer();
-        $this->loadPlayerData($player);
         if (!$this->hasRegistered($player)) {
             $this->showRegisterUI($player);
         } else {
@@ -49,32 +108,7 @@ class Main extends PluginBase implements Listener {
         }
     }
 
-    public function onPlayerQuit(Player $player): void {
-        $this->unloadPlayerData($player);
-    }
-
-    private function loadPlayerData(Player $player): void {
-        $playerName = $player->getName();
-        $playerFile = new Config($this->getDataFolder() . "data/" . $playerName . ".yml", Config::YAML);
-        $this->players[$playerName] = $playerFile;
-    }
-
-    private function unloadPlayerData(Player $player): void {
-        $playerName = $player->getName();
-        if (isset($this->players[$playerName])) {
-            unset($this->players[$playerName]);
-        }
-    }
-
-    private function hasRegistered(Player $player): bool {
-        $playerName = $player->getName();
-        return $this->players[$playerName]->exists("password");
-    }
-
     private function showRegisterUI(Player $player): void {
-        $playerName = $player->getName();
-        $playerFile = $this->players[$playerName];
-
         $form = new CustomForm(function(Player $player, ?array $data): void {
             if ($data === null) {
                 $player->kick(TextFormat::RED . "Registration cancelled", false);
@@ -83,12 +117,12 @@ class Main extends PluginBase implements Listener {
             $password = $data[0];
             $confirmPassword = $data[1];
 
-            $playerName = $player->getName();
-            $playerFile = $this->players[$playerName];
-
             if ($password === $confirmPassword) {
-                $playerFile->set("password", $password);
-                $playerFile->save();
+                $playerData = [
+                    'password' => $password,
+                    'loginStreak' => 0
+                ];
+                $this->savePlayerData($player, $playerData);
                 $player->sendMessage($this->config->get("register_success_message"));
             } else {
                 $player->kick($this->config->get("password_mismatch_kick_message"), false);
@@ -103,10 +137,8 @@ class Main extends PluginBase implements Listener {
     }
 
     private function showLoginUI(Player $player): void {
-        $playerName = $player->getName();
-        $playerFile = $this->players[$playerName];
-
-        $loginStreak = $playerFile->get("login_streak", 0);
+        $playerData = $this->getPlayerData($player);
+        $loginStreak = $playerData['loginStreak'] ?? 0;
         $loginTarget = $this->config->get("login_target", 5);
         $remainingLogins = $loginTarget - ($loginStreak % $loginTarget);
 
@@ -117,16 +149,15 @@ class Main extends PluginBase implements Listener {
             }
             $password = $data[0];
 
-            $playerName = $player->getName();
-            $playerFile = $this->players[$playerName];
-            $savedPassword = $playerFile->get("password");
+            $playerData = $this->getPlayerData($player);
+            $savedPassword = $playerData['password'];
 
             if ($password === $savedPassword) {
                 $player->sendMessage($this->config->get("login_success_message"));
 
-                $loginStreak = $playerFile->get("login_streak", 0) + 1;
-                $playerFile->set("login_streak", $loginStreak);
-                $playerFile->save();
+                $loginStreak = $playerData['loginStreak'] + 1;
+                $playerData['loginStreak'] = $loginStreak;
+                $this->savePlayerData($player, $playerData);
 
                 $this->checkLoginRewards($player, $loginStreak);
 
@@ -159,26 +190,28 @@ class Main extends PluginBase implements Listener {
 
                 $rewardMessage = str_replace("{milestone}", (string)$milestone, $this->config->get("reward_message"));
                 $player->sendMessage($rewardMessage);
-
             }
         }
     }
 
-
+    public function unregisterPlayer(Player $player): void {
+        $playerName = $player->getName();
+        $this->database->exec("DELETE FROM players WHERE playerName = '$playerName'");
+        unset($this->players[$playerName]);
+        $player->sendMessage($this->config->get("unregister_success_message"));
+    }
 
     public function reloadPlayerData(): void {
-        foreach ($this->players as $playerName => $playerFile) {
-            $player = $this->getServer()->getPlayerExact($playerName);
-            if ($player !== null) {
-                $player->sendMessage($this->config->get("reload_message"));
-                $this->unloadPlayerData($player);
-                $this->loadPlayerData($player);
-            }
-        }
+        $this->players = [];
+        $this->loadPlayerData();
         $this->getLogger()->info("Player data reloaded.");
     }
-
-    public function forgotPassword(Player $player): void {
-        $player->sendMessage($this->config->get("forgot_password_message"));
-    }
 }
+
+        
+    
+            
+       
+
+        
+           
