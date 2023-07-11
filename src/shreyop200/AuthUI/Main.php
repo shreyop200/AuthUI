@@ -38,7 +38,7 @@ class Main extends PluginBase implements Listener {
 
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
         $this->getServer()->getCommandMap()->register($this->getName(), new ReloadCommand($this, $this->getName()));
-        $this->getServer()->getCommandMap()->register($this->getName(), new UnregisterCommand($this, $this->getName()));
+        //$this->getServer()->getCommandMap()->register($this->getName(), new UnregisterCommand($this, $this->getName()));
 
         $this->getScheduler()->scheduleDelayedTask(new ClosureTask(function (/*int $currentTick*/): void {
             $this->loadPlayerData();
