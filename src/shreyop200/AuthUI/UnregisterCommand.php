@@ -1,13 +1,13 @@
 <?php
 
-declare(strict_types=1);
+/*declare(strict_types=1);
 
 namespace shreyop200\AuthUI;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
-use pocketmine\utils\TextFormat;
+use pocketmin\utils\TextFormat;
 
 class UnregisterCommand extends Command {
 
@@ -23,7 +23,7 @@ class UnregisterCommand extends Command {
         
         # TODO: Complete it
     }
-}
+}*/
 
 
     
