@@ -12,9 +12,9 @@ commands:
     description: Reload player data
     permission: authui.command.reload
     
-  unregister:
-    description: Unregister a player
-    permission: authui.command.unregister
+  #unregister:
+    #description: Unregister a player
+    #permission: authui.command.unregister
 
 permissions:
   authui.use:
@@ -25,6 +25,6 @@ permissions:
     default: op
     description: "Allows the player to use reload command"
     
-  authui.command.unregister:
-    default: op
-    description: "Allows the player to use unregister command"
+  #authui.command.unregister:
+    #default: op
+    #description: "Allows the player to use unregister command"
