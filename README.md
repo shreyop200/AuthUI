@@ -16,19 +16,20 @@
 
 - Login Rewards: AuthUI provides login rewards based on the login count reached by players. You can enable or disable this feature in the `config.yml` file and customize the rewards.
 
-- Per-Player Data: The plugin stores individual player data in the `plugin_data/AuthUI/data/` directory. Each player's data is saved in a YAML file, allowing for easy editing and management.
+- Data Encryption: AuthUI ensures top-notch security by storing passwords, login streaks, and more in an SQL database with data encryption.
 
 - Data Reload: The `/loginreload` command allows you to reload all the data without restarting the server. This convenient command ensures that any changes made to the player data are immediately applied.
 
 - Extensive Configuration: The `config.yml` file provides extensive customization options, allowing you to modify all the plugin's messages according to your preferences.
 
-- Forget Password (Coming Soon): A "Forget Password" feature is currently in development, which will assist players in recovering their forgotten passwords.
+- `/unlink` Command (Coming Soon): The upcoming `/unlink` command allows server owners to directly unregister a player if they have forgotten their password.
 
 ## Commands
 
 | Command               | Description                        |
 |-----------------------|------------------------------------|
 | `/loginreload`        | Reloads all player data             |
+| `/unregister` / `/unlink`        | UnRegister a logged player to Registration             |
 
 *Note: AuthUI focuses on practical login and registration logic and does not rely heavily on commands. If you believe any additional commands are necessary, feel free to submit a pull request.*
 
