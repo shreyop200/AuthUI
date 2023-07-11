@@ -21,22 +21,7 @@ class UnregisterCommand extends Command {
 
     public function execute(CommandSender $sender, string $commandLabel, array $args): bool {
         
-        /*$playerName = $args[0];
-        $player = $this->plugin->getServer()->getPlayer($playerName);
-        if ($player === null) {
-            $sender->sendMessage(TextFormat::RED . "Player not found.");
-            return true;
-        }
-
-        if (!$this->plugin->hasRegistered($player)) {
-            $sender->sendMessage(TextFormat::RED . "The player is not registered.");
-            return true;
-        }
-
-        $this->plugin->unregisterPlayer($player);
-        $sender->sendMessage(TextFormat::GREEN . "The player has been unregistered successfully.");
-
-        return true;*/
+        # TODO: Complete it
     }
 }
 
