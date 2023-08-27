@@ -13,9 +13,6 @@ use jojoe77777\FormAPI;
 use jojoe77777\FormAPI\CustomForm;
 use jojoe77777\FormAPI\SimpleForm;
 use pocketmine\console\ConsoleCommandSender;
-use pocketmine\AsyncTask;
-use pocketmine\scheduler\ClosureTask;
-use pocketmine\scheduler\TaskScheduler;
 use SQLite3;
 use SQLite3Result;
 
@@ -38,11 +35,9 @@ class Main extends PluginBase implements Listener {
 
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
         $this->getServer()->getCommandMap()->register($this->getName(), new ReloadCommand($this, $this->getName()));
-        //$this->getServer()->getCommandMap()->register($this->getName(), new UnregisterCommand($this, $this->getName()));
-
-        $this->getScheduler()->scheduleDelayedTask(new ClosureTask(function (/*int $currentTick*/): void {
-            $this->loadPlayerData();
-        }), 1);
+        
+        // Load player data when the server starts
+        $this->loadPlayerData();
     }
 
     private function createDataFolder(): void {
@@ -206,12 +201,9 @@ class Main extends PluginBase implements Listener {
         $this->loadPlayerData();
         $this->getLogger()->info("Player data reloaded.");
     }
+
+    public function onDisable(): void {
+        // Save player data when the server stops
+        $this->savePlayerData();
+    }
 }
-
-        
-    
-            
-       
-
-        
-           
